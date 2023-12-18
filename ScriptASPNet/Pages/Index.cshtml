@@ -1,0 +1,43 @@
+﻿@page
+@using Microsoft.JSInterop;
+@using Microsoft.Azure.Cosmos;
+@using System.ComponentModel;
+@using ScriptASPNet.Services;
+@inject CosmosService _cosmosService
+@model IndexPageModel
+
+
+<header class="p-5 mb-5 bg-dark text-white rounded-bottom">
+    <div class="container-fluid">
+        <h4 class="display-4 fw-bold">
+            Liste des protocoles activés
+        </h4>  
+    </div>
+</header>
+<div class="row" data-masonry='{"percentPosition": true }'>
+    @foreach(Protocole item in Model.Protocole ?? Enumerable.Empty<Protocole>())
+    {
+        <div class="col-sm-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                        @item.protocole
+                    </h5>
+                    <p class="card-text text-center">@item.date</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@if (await _cosmosService?.ShowLaunch())
+{
+    <button class="btn btn-primary" onclick="redirectToAjoutP04()">
+        Lancer le protocole P04
+    </button>
+
+    <script>
+        function redirectToAjoutP04() {
+            window.location.href = '/AjoutP04';
+        }
+    </script>
+}

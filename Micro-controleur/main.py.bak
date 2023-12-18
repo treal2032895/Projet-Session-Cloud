@@ -1,0 +1,131 @@
+#import sys; sys.path.append('/lib')
+
+import board
+import busio
+from digitalio import DigitalInOut
+from constantes import *
+from fonctions import *
+from information import Information 
+from panneau import Panneau
+
+import adafruit_esp32spi.adafruit_esp32spi_socket as socket
+from adafruit_esp32spi import adafruit_esp32spi 
+from adafruit_esp32spi import adafruit_esp32spi_wifimanager
+import adafruit_minimqtt.adafruit_minimqtt as MQTT
+
+# Obtient les divers réglages depuis le fichier secrets.py
+try:
+    from secrets import secrets
+except ImportError:
+    print("\nERREUR!")
+    print("Les réglages sont dans le fichier secrets.py .")
+    print ("Veuillez valider son existence et son contenu!")
+    raise
+
+# Pins du module "Nina W102 uBlox", qui fournit le WiFi et le BLE
+esp32_cs = DigitalInOut(board.CS1)
+esp32_ready = DigitalInOut(board.ESP_BUSY)
+esp32_reset = DigitalInOut(board.ESP_RESET)
+
+# Utilise le SPI secondaire connecté au module W102
+spi = busio.SPI(board.SCK1, board.MOSI1, board.MISO1)
+esp = adafruit_esp32spi.ESP_SPIcontrol(spi, esp32_cs, esp32_ready, esp32_reset)
+wifi = adafruit_esp32spi_wifimanager.ESPSPI_WiFiManager(esp, secrets)
+
+
+def connected(client, userdata, flags, rc):
+
+    print ("OK!")
+    print("Serveur:\t%s" % secrets["mqtt_host"])
+    print("\nAbonnement au topic...")
+    client.subscribe(MQTT_TOPIC_CONTROLEUR_CMD + "/#")
+    client.subscribe(MQTT_TOPIC_PORTAIL_STATUT)
+
+def disconnected(client, userdata, rc):
+    print("Déconnecté du serveur!")
+
+def subscribe(mqtt_client, userdata, topic, granted_qos):
+    print("OK!")
+    print("Topic:\t{0}\tQOS level: {1}".format(topic, granted_qos))
+
+def unsubscribe(mqtt_client, userdata, topic, pid):
+    print("Désabonné du topic {0} avec le PID {1}".format(topic, pid))
+
+def publish(mqtt_client, userdata, topic, pid):
+    print("Message publié sur {0} avec PID {1}".format(topic, pid))
+
+def traiter_information(information):
+    try:
+        globals()[information.fonction](panneau, information)
+    except Exception as e:
+        print(repr(e))
+        jsonPublish(repr(e), SON_ECHEC, information)
+       
+def message(client, topic, message):
+    info = Information(client, topic, message)
+    info.afficher()
+    traiter_information(info)
+
+def demarage():
+#    mqtt_client.publish(MQTT_TOPIC_MODULE_STATUT,json.dumps(MESSAGE_DEMARRAGE_MODULE)) 
+
+def fermeture():
+#    mqtt_client.publish(MQTT_TOPIC_MODULE_STATUT,json.dumps(MESSAGE_FERMETURE_MODULE))
+
+    
+# Initialise l'interface MQTT avec l'interface esp 
+socket.set_interface(esp)
+MQTT.set_socket(socket, esp)
+
+# Set up du client miniMQTT
+mqtt_client = MQTT.MQTT(
+    broker=secrets["mqtt_host"],
+    port=secrets["mqtt_port"],
+    username=secrets["mqtt_username"],
+    password=secrets["mqtt_password"],
+)
+
+# Setup des méthodes de callback
+mqtt_client.on_connect = connected
+mqtt_client.on_disconnect = disconnected
+mqtt_client.on_message = message
+mqtt_client.on_subscribe = subscribe
+mqtt_client.on_unsubscribe = unsubscribe
+mqtt_client.on_publish = publish
+
+
+print("\n\n")
+print("==========================")
+print("Démarrage du programme...")
+print("==========================")
+
+
+# Connexion au wifi
+print("\nConnexion au WiFi...")
+wifi.connect()
+print("OK!")
+print("SSID:\t", str(esp.ssid, "utf-8"), "\tRSSI:", esp.rssi)
+print("IP:\t", esp.pretty_ip(esp.ip_address))
+
+
+
+# Connexion au serveur MQTT
+print("\nConnexion au serveur MQTT...")
+mqtt_client.connect()
+
+
+# Panneau
+panneau = Panneau(debug = True)
+
+demarage() 
+
+print("debut")
+while (True):
+    mqtt_client.loop()
+
+fermeture()
+
+print("\n==========================")
+print("")
+print("")
+print("==========================\n")

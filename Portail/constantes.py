@@ -1,0 +1,40 @@
+#******* PORTAIL *******
+
+# Configuration
+PATH_SON = "/sons/"
+PATH_IMAGE = "/images/"
+PATH_FONT = "/fonts/"
+INIT_PORTAIL = "Initialisation..."
+INIT_MQTT = "MQTT: ..."
+INIT_WIFI = "WIFI: ..."
+INIT_MQTT_OK = "MQTT: OK"
+INIT_WIFI_OK = "WIFI: OK"
+
+# Ecran
+MODELE = "PyPortalTitano"
+ECRAN_LARGEUR = 480
+ECRAN_HAUTEUR = 320
+BACKLIGHT_LOW = 0.5
+
+# Ressources
+IMAGE_INIT = PATH_IMAGE + "init.bmp"
+IMAGE_ENTETE = PATH_IMAGE + "entete.bmp"
+FONT_SMALL = PATH_FONT + "Roboto-Condensed-22.bdf"
+FONT_MEDIUM = PATH_FONT + "Roboto-Black-26.bdf"
+FONT_LARGE = PATH_FONT + "Roboto-Black-30.bdf"
+GLYPHS = 'b"abcdefghjiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:- ()[]"'
+
+# Projet
+PROJET = "CLOUD"
+FUSEE = "TEST"
+CONTROLEUR = "CONTROLEUR"
+MODULE = "MODULE"
+PORTAIL = "PORTAIL"
+OPERATION_STATUT = "STATUT"
+OPERATION_COMMANDE = "CMD"
+
+# Fonctionnement (votre section)
+TOPIC_STATUT = "CLOUD/ATMAB/MODULE/STATUT/"
+TOPIC_CMD = "CLOUD/ATMAB/MODULE/STATUT/CMD/#"
+TOPIC_PORTAIL = "CLOUD/ATMAB/PORTAIL/STATUT/"
+

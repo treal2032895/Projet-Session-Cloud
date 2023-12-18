@@ -1,0 +1,31 @@
+from random import random
+from time import time
+from constantes import P01, MQTT_TOPIC_PORTAIL_STATUT
+from panneau import Panneau
+from information import Information
+import json
+import time
+import random
+
+
+def protocole_01(panneau: Panneau, information: Information):
+    nb = 0
+    while nb<3:
+        panneau.scan()
+        if (panneau.getChangementBouton("btnA") == True) :
+            panneau.setBtnLed_On("ledA")
+        elif (panneau.getChangementBouton("btnA") == False) :
+            panneau.setBtnLed_Off("ledA") 
+            nb+=1    
+        print(str(nb))
+    panneau.__ledsRGB.__rainbow_cycle(0.1)
+    panneau.__ledsRGB.__off()
+
+
+def jsonPublish(affichage, son, information : Information ):
+    send_msg = {
+        'affichage' : affichage,
+        'son'       : son
+    }
+    information.client.publish(MQTT_TOPIC_PORTAIL_STATUT + "/" + information.code, json.dumps(send_msg))
+

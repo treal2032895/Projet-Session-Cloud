@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "Hash": "XWaNyhsh/XmbQe6Gw4uQzZHUdsqG4JWCvnATq1mJ6hA=",
+  "Source": "ScriptASPNet",
+  "BasePath": "_content/ScriptASPNet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ScriptASPNet\\wwwroot",
+      "Source": "ScriptASPNet",
+      "ContentRoot": "C:\\Users\\Marc-Antoine\\Documents\\Cloud\\ScriptASPNet\\wwwroot\\",
+      "BasePath": "_content/ScriptASPNet",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Marc-Antoine\\Documents\\Cloud\\ScriptASPNet\\wwwroot\\favicon.ico",
+      "SourceId": "ScriptASPNet",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Marc-Antoine\\Documents\\Cloud\\ScriptASPNet\\wwwroot\\",
+      "BasePath": "_content/ScriptASPNet",
+      "RelativePath": "favicon.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Marc-Antoine\\Documents\\Cloud\\ScriptASPNet\\wwwroot\\icon.png",
+      "SourceId": "ScriptASPNet",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Marc-Antoine\\Documents\\Cloud\\ScriptASPNet\\wwwroot\\",
+      "BasePath": "_content/ScriptASPNet",
+      "RelativePath": "icon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\icon.png"
+    }
+  ]
+}
